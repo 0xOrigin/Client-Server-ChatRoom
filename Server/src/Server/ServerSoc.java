@@ -21,7 +21,7 @@ public class ServerSoc{
 
     public void start(){
         try {
-            System.out.println("[!] Server started.");
+            System.out.println("<Server> started.");
             while(!this.serverSocket.isClosed()){
                 Socket socket = this.serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(socket);

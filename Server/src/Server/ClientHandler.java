@@ -3,6 +3,8 @@ package Server;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientHandler implements Runnable{
 
@@ -11,12 +13,14 @@ public class ClientHandler implements Runnable{
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String name;
+    private String id;
 
     public ClientHandler(Socket socket){
         try{
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            this.id = this.readClientID();
             this.name = this.readClientName();
 
             this.addClientHandler();
@@ -26,6 +30,10 @@ public class ClientHandler implements Runnable{
     }
 
     private synchronized String readClientName() throws IOException{
+        return this.bufferedReader.readLine();
+    }
+
+    private synchronized String readClientID() throws IOException{
         return this.bufferedReader.readLine();
     }
 
@@ -41,16 +49,30 @@ public class ClientHandler implements Runnable{
 
     public synchronized void addClientHandler(){
         clientHandlers.add(this);
-        String message = "[!] Server : " + this.name + " has joined the chat.";
+        String message = "<Server>: <" + this.name + "> has joined the chat";
         System.out.println(message);
         broadcastMessage(message);
     }
 
     public synchronized void removeClientHandler(){
-        String message = "[!] Server : " + this.name + " has left the chat.";
+        String message = "<Server>: <" + this.name + "> has left the chat";
         System.out.println(message);
         this.broadcastMessage(message);
         clientHandlers.remove(this);
+    }
+
+    public synchronized boolean isConnected(){
+        return this.socket != null && this.socket.isConnected();
+    }
+
+    public synchronized Map<String, String> getConnectedClients(){
+        Map<String, String> map = new HashMap<>();
+
+        for(ClientHandler clientHandler : clientHandlers)
+            if(clientHandler.isConnected())
+                map.put(clientHandler.id, clientHandler.name);
+
+        return map;
     }
 
     private synchronized void sendMessage(ClientHandler clientHandler, String message){

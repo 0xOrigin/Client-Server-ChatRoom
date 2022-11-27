@@ -2,14 +2,15 @@ package Client.Controllers;
 
 import AppDataReader.SocketConfig;
 import AppDataReader.SocketConfigImp;
+import Client.Views.ChatRoomViewController;
 
 public class ClientControllerImp implements ClientController {
 
     private final ClientSoc clientSoc;
 
-    public ClientControllerImp(String clientName){
+    public ClientControllerImp(String clientID, String clientName, ChatRoomViewController controller){
         SocketConfig socketConfig = new SocketConfigImp();
-        this.clientSoc = new ClientSoc(socketConfig.getHost(), socketConfig.getPort(), clientName);
+        this.clientSoc = new ClientSoc(socketConfig.getHost(), socketConfig.getPort(), clientID, clientName, controller);
     }
 
     @Override
@@ -25,11 +26,6 @@ public class ClientControllerImp implements ClientController {
     @Override
     public void sendMessage(String message){
         this.clientSoc.sendMessage(message);
-    }
-
-    @Override
-    public void sendToBroadcast(){
-        this.clientSoc.sendToBroadcast();
     }
 
 }

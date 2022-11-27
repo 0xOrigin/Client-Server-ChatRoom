@@ -6,4 +6,10 @@ public interface ClientRegController {
 
     void sendSuccessfulRegistrationEmail(String email, String id, String password);
 
+    boolean isValidName(String name);
+
+    boolean isValidEmail(String email);
+
+    boolean isValidPassword(String password);
+
 }

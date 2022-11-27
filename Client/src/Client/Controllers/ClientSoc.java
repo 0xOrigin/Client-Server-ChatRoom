@@ -1,24 +1,26 @@
 package Client.Controllers;
 
+import Client.Views.ChatRoomViewController;
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientSoc {
 
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private Scanner scanner;
+    private ChatRoomViewController controller;
     private String name;
+    private String id;
 
-    public ClientSoc(String host, int port, String name){
+    public ClientSoc(String host, int port, String id, String name, ChatRoomViewController controller){
         try{
             this.socket = new Socket(host, port);
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.scanner = new Scanner(System.in);
+            this.controller = controller;
             this.name = name;
+            this.id = id;
         } catch (IOException ex){
             this.close();
         }
@@ -39,18 +41,8 @@ public class ClientSoc {
     }
 
     void sendRegistrationMessage(){
+        this.sendMessage(this.id);
         this.sendMessage(this.name);
-    }
-
-    void sendToBroadcast(){
-        try {
-            while(this.socket.isConnected()){
-                String message = this.generateClientMessage(scanner.nextLine());
-                this.sendMessage(message);
-            }
-        } catch (NullPointerException | IllegalStateException exception){
-            close();
-        }
     }
 
     void listenToBroadcast(){
@@ -63,7 +55,7 @@ public class ClientSoc {
                         message = bufferedReader.readLine();
                         if(message == null)
                             break;
-                        printMessage(message);
+                        controller.appendMessageToMessageArea(message);
                     }
                 } catch (IOException | NullPointerException ex){
                     close();
@@ -73,25 +65,15 @@ public class ClientSoc {
             }
         }).start();
     }
-    private String generateClientMessage(String message){
-        return "[!] " + this.name + " : " + message;
-    }
-
-    private void printMessage(String message){
-        if(message != null)
-            System.out.println(message);
-    }
 
     synchronized void close() {
         try {
-            if(this.scanner != null)
-                this.scanner.close();
             if(this.bufferedReader != null)
                 this.bufferedReader.close();
             if(this.bufferedWriter != null)
                 this.bufferedWriter.close();
             if(this.socket == null)
-                System.out.println("[!] Server is closed");
+                System.out.println("<Server> is closed");
             else
                 this.socket.close();
 

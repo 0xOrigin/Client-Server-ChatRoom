@@ -30,4 +30,18 @@ public class ClientRegControllerImp implements ClientRegController {
         SendEmail.setDefaultConfig(new EmailConfigImp()).send(email, messageSubject, messageText);
     }
 
+    @Override
+    public boolean isValidName(String name){
+        return DataValidator.isValidName(name);
+    }
+
+    @Override
+    public boolean isValidEmail(String email){
+        return DataValidator.isValidEmail(email);
+    }
+
+    @Override
+    public boolean isValidPassword(String password){
+        return DataValidator.isValidPassword(password);
+    }
 }

@@ -11,6 +11,7 @@ public class DataGenerator {
     String generateID(String name){
         StringBuilder generatedID = new StringBuilder();
         name = name.replaceAll(" ", "_");
+        name = name.length() > 5 ? name.substring(0, 5) : name;
         generatedID.append(name);
         int numOfRandoms = 5;
         generatedID.append(this.generateRandomNumbers(numOfRandoms));

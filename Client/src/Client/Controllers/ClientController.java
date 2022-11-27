@@ -8,6 +8,4 @@ public interface ClientController {
 
     void sendMessage(String message);
 
-    void sendToBroadcast();
-
 }

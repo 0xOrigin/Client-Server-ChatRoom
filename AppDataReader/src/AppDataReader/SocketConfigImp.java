@@ -4,13 +4,12 @@ import java.util.Map;
 
 public class SocketConfigImp implements SocketConfig{
 
-    private final JSONReader jsonReader;
     private final Map<Object, Object> configMap;
 
     public SocketConfigImp(){
-        this.jsonReader = new JSONReader(new ConfigPath().get());
+        JSONReader jsonReader = new JSONReader(new ConfigPath().get());
 
-        this.configMap = (Map) this.jsonReader.getMap(AppDataEnum.SocketConfigurations);
+        this.configMap = (Map) jsonReader.getMap(AppDataEnum.SocketConfigurations);
     }
 
     @Override
@@ -21,6 +20,11 @@ public class SocketConfigImp implements SocketConfig{
     @Override
     public int getPort() {
         return Integer.parseInt((String) this.configMap.get(AppDataEnum.Port.name()));
+    }
+
+    @Override
+    public int getBacklog(){
+        return Integer.parseInt((String) this.configMap.get(AppDataEnum.Backlog.name()));
     }
 
 }

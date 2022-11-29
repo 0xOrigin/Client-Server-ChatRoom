@@ -2,7 +2,10 @@ package AppDataReader;
 
 public interface SocketConfig {
 
-    public String getHost();
+    String getHost();
 
-    public int getPort();
+    int getPort();
+
+    int getBacklog();
+
 }

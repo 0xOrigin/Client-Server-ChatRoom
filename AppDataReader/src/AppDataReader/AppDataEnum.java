@@ -10,7 +10,7 @@ public enum AppDataEnum {
     
     ConnectionStrings, ClassName, ClassPath, DatabasePath,
 
-    SocketConfigurations,
+    SocketConfigurations, Backlog,
     
     PersonalName, EmailConfigurations, SenderEmail, SenderPassword, Host, Port;
     

@@ -8,7 +8,7 @@ public class ServerRunner {
     public static void main(String[] args) {
 
         SocketConfig socketConfig = new SocketConfigImp();
-        ServerSoc serverSoc = new ServerSoc(socketConfig.getPort());
+        ServerSoc serverSoc = new ServerSoc(socketConfig.getPort(), socketConfig.getBacklog(), socketConfig.getHost());
         serverSoc.start();
 
     }

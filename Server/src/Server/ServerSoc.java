@@ -1,6 +1,7 @@
 package Server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
@@ -10,9 +11,11 @@ public class ServerSoc{
     private ServerSocket serverSocket;
     private ExecutorService executorService;
 
-    public ServerSoc(int port){
+    public ServerSoc(int port, int backlog, String host){
         try {
-            this.serverSocket = new ServerSocket(port);
+            InetAddress inetAddress = InetAddress.getByName(host);
+            String hostName = inetAddress.getHostName();
+            this.serverSocket = new ServerSocket(port, backlog, inetAddress);
             this.executorService = Executors.newCachedThreadPool();
         } catch (IOException e) {
             this.close();
@@ -29,6 +32,9 @@ public class ServerSoc{
                 this.executorService.execute(clientHandler);
             }
         } catch (IOException ex){
+            this.close();
+        } catch (NullPointerException ex){
+            System.out.println("<Server> is already started in another process with the same address and port.");
             this.close();
         }
     }

@@ -3,8 +3,6 @@ package Server;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ClientHandler implements Runnable{
 
@@ -51,6 +49,7 @@ public class ClientHandler implements Runnable{
         clientHandlers.add(this);
         String message = "<Server>: <" + this.name + "> has joined the chat";
         System.out.println(message);
+        System.out.println("<Server> number of connected clients: " + clientHandlers.size());
         broadcastMessage(message);
     }
 
@@ -59,20 +58,7 @@ public class ClientHandler implements Runnable{
         System.out.println(message);
         this.broadcastMessage(message);
         clientHandlers.remove(this);
-    }
-
-    public synchronized boolean isConnected(){
-        return this.socket != null && this.socket.isConnected();
-    }
-
-    public synchronized Map<String, String> getConnectedClients(){
-        Map<String, String> map = new HashMap<>();
-
-        for(ClientHandler clientHandler : clientHandlers)
-            if(clientHandler.isConnected())
-                map.put(clientHandler.id, clientHandler.name);
-
-        return map;
+        System.out.println("<Server> number of connected clients: " + clientHandlers.size());
     }
 
     private synchronized void sendMessage(ClientHandler clientHandler, String message){

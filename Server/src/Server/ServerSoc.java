@@ -24,7 +24,9 @@ public class ServerSoc{
 
     public void start(){
         try {
-            System.out.println("<Server> started.");
+            if(this.serverSocket != null)
+                System.out.println("<Server> started on " + this.serverSocket.getInetAddress() +
+                                    ":" + this.serverSocket.getLocalPort() + "\n");
             while(!this.serverSocket.isClosed()){
                 Socket socket = this.serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(socket);
@@ -34,7 +36,7 @@ public class ServerSoc{
         } catch (IOException ex){
             this.close();
         } catch (NullPointerException ex){
-            System.out.println("<Server> is already started in another process with the same address and port.");
+            System.out.println("<Server> cannot be started, the address and port are already taken.");
             this.close();
         }
     }

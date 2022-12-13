@@ -1,8 +1,9 @@
-package Client.Views;
+package Client.Views.ViewControllers;
 
 import Client.Controllers.LoginController;
 import Client.Controllers.LoginControllerImp;
 import Client.Models.Client_DbContext;
+import Client.Views.Utilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

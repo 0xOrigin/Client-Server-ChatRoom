@@ -1,5 +1,6 @@
-package Client.Views;
+package Client.Views.ViewControllers;
 
+import Client.Views.Utilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

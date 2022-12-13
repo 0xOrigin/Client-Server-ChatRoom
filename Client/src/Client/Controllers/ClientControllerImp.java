@@ -2,7 +2,7 @@ package Client.Controllers;
 
 import AppDataReader.SocketConfig;
 import AppDataReader.SocketConfigImp;
-import Client.Views.ChatRoomViewController;
+import Client.Views.ViewControllers.ChatRoomViewController;
 
 public class ClientControllerImp implements ClientController {
 

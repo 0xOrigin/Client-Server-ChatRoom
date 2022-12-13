@@ -1,6 +1,6 @@
 package Client.Controllers;
 
-import Client.Views.ChatRoomViewController;
+import Client.Views.ViewControllers.ChatRoomViewController;
 import java.io.*;
 import java.net.Socket;
 

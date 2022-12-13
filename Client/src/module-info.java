@@ -10,4 +10,6 @@ module Client {
     exports Client.Views;
     exports Client.Controllers;
     exports Client.Models;
+    exports Client.Views.ViewControllers;
+    opens Client.Views.ViewControllers;
 }

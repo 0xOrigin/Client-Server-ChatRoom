@@ -58,6 +58,8 @@ public class RegisterViewController extends Utilities {
     @FXML
     void onRegisterButtonAction(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        super.setAlertOwner(event, alert);
+
         ClientRegController clientRegController = new ClientRegControllerImp(new Client_DbContext());
 
         if(nameField.getText().trim().isBlank())

@@ -34,6 +34,8 @@ public class LoginViewController extends Utilities {
     @FXML
     void onLoginButtonAction(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        super.setAlertOwner(event, alert);
+
         LoginController loginController = new LoginControllerImp(new Client_DbContext());
         String id = idField.getText().trim();
         String password = passwordField.getText();

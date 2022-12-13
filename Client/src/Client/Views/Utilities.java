@@ -2,6 +2,7 @@ package Client.Views;
 
 import Client.Controllers.ClientController;
 import Client.Controllers.ClientControllerImp;
+import Client.Views.ViewControllers.ChatRoomViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -17,17 +18,20 @@ import java.io.IOException;
 public class Utilities {
 
     protected void changeScene(ActionEvent event, String fxmlFile, String stageTitle){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/" + fxmlFile));
-            Parent root = (Parent) loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle(stageTitle);
-            centerOnScreen(stage);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        FXMLLoader loader = getLoader(fxmlFile);
+        Parent root = getParent(loader);
+        setStagePreferences(root, event, stageTitle);
+    }
+
+    protected void openChatRoom(ActionEvent event, String clientID, String clientName){
+        FXMLLoader loader = getLoader("ChatRoomView.fxml");
+        Parent root = getParent(loader);
+
+        ClientController clientController = new ClientControllerImp(clientID, clientName, loader.getController());
+        setControllerData(loader.getController(), clientController, clientID, clientName);
+        registerAndStart(clientController);
+
+        setStagePreferences(root, event, "Chat Room");
     }
 
     public static void centerOnScreen(Stage stage){
@@ -36,24 +40,24 @@ public class Utilities {
         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
-    protected void openChatRoom(ActionEvent event, String clientID, String clientName){
+    private FXMLLoader getLoader(String fxmlFile){
+        return new FXMLLoader(Utilities.class.getResource("FXML/" + fxmlFile));
+    }
+
+    private Parent getParent(FXMLLoader loader){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/ChatRoomView.fxml"));
-            Parent root = (Parent) loader.load();
-
-            ClientController clientController = new ClientControllerImp(clientID, clientName, loader.getController());
-            setControllerData(loader.getController(), clientController, clientID, clientName);
-
-            registerAndStart(clientController);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Chat Room");
-            centerOnScreen(stage);
-            stage.show();
+            return (Parent) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void setStagePreferences(Parent root, ActionEvent event, String stageTitle){
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle(stageTitle);
+        centerOnScreen(stage);
+        stage.show();
     }
 
     private void setControllerData(ChatRoomViewController controller, ClientController clientController, String id, String name){
@@ -67,10 +71,15 @@ public class Utilities {
         clientController.listenToBroadcast();
     }
 
-    void handleAlert(Alert alert, String title, String message, Alert.AlertType alertType){
+    protected void setAlertOwner(ActionEvent event, Alert alert){
+        alert.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
+    }
+
+    protected void handleAlert(Alert alert, String title, String message, Alert.AlertType alertType){
         alert.setAlertType(alertType);
         alert.setTitle(title);
         alert.setContentText(message);
         alert.show();
     }
+
 }

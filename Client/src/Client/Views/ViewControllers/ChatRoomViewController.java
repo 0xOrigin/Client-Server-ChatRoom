@@ -65,15 +65,15 @@ public class ChatRoomViewController extends Utilities {
         this.messagesArea.appendText(message + "\n");
     }
 
-    void setClientName(String name){
+    public void setClientName(String name){
         this.clientName.setText(name);
     }
 
-    void setClientID(String id){
+    public void setClientID(String id){
         this.clientID.setText(id);
     }
 
-    void setClientController(ClientController controller){
+    public void setClientController(ClientController controller){
         this.clientController = controller;
     }
 }

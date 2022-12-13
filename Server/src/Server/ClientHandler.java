@@ -47,14 +47,14 @@ public class ClientHandler implements Runnable{
 
     public synchronized void addClientHandler(){
         clientHandlers.add(this);
-        String message = "<Server>: <" + this.name + "> has joined the chat";
+        String message = "<Server>: <" + this.name + "(" + this.id + ")" + "> has joined the chat";
         System.out.println(message);
         System.out.println("<Server> number of connected clients: " + clientHandlers.size());
         broadcastMessage(message);
     }
 
     public synchronized void removeClientHandler(){
-        String message = "<Server>: <" + this.name + "> has left the chat";
+        String message = "<Server>: <" + this.name + "(" + this.id + ")" + "> has left the chat";
         System.out.println(message);
         this.broadcastMessage(message);
         clientHandlers.remove(this);

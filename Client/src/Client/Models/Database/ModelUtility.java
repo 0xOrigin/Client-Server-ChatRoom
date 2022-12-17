@@ -26,7 +26,7 @@ abstract class ModelUtility {
     protected ModelUtility(Adapter adapter){
     
         this.modelInstance = adapter;
-        this.primaryKey = adapter.getPrimaryKeyColumnName();
+        this.primaryKey = adapter.getUniqueKeyColumnName();
     }
     
     

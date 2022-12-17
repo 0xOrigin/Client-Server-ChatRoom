@@ -6,11 +6,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
 
+/**
+ * The class Server soc.
+ */
 public class ServerSoc{
 
     private ServerSocket serverSocket;
     private ExecutorService executorService;
 
+    /**
+     * Instantiates a new Server soc.
+     *
+     * @param port    the port
+     * @param backlog the backlog
+     * @param host    the host
+     */
     public ServerSoc(int port, int backlog, String host){
         try {
             InetAddress inetAddress = InetAddress.getByName(host);
@@ -22,13 +32,20 @@ public class ServerSoc{
         }
     }
 
+    /**
+     * Start.
+     */
     public void start(){
         try {
-            if(this.serverSocket != null)
+            if(this.serverSocket != null) {
                 System.out.println("<Server> started on " + this.serverSocket.getInetAddress() +
-                                    ":" + this.serverSocket.getLocalPort() + "\n");
+                        ":" + this.serverSocket.getLocalPort() + "\n");
+//                System.out.println(this.serverSocket);
+            }
             while(!this.serverSocket.isClosed()){
                 Socket socket = this.serverSocket.accept();
+//                System.out.println(socket + " From server");
+
                 ClientHandler clientHandler = new ClientHandler(socket);
 
                 this.executorService.execute(clientHandler);
@@ -41,6 +58,9 @@ public class ServerSoc{
         }
     }
 
+    /**
+     * Close.
+     */
     public void close(){
         try {
             if(this.serverSocket != null)

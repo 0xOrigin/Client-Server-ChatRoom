@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * The class Client handler.
+ */
 public class ClientHandler implements Runnable{
 
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
@@ -13,6 +16,11 @@ public class ClientHandler implements Runnable{
     private String name;
     private String id;
 
+    /**
+     * Instantiates a new Client handler.
+     *
+     * @param socket the socket
+     */
     public ClientHandler(Socket socket){
         try{
             this.socket = socket;
@@ -45,6 +53,9 @@ public class ClientHandler implements Runnable{
         return line;
     }
 
+    /**
+     * Add client handler.
+     */
     public synchronized void addClientHandler(){
         clientHandlers.add(this);
         String message = "<Server>: <" + this.name + "(" + this.id + ")" + "> has joined the chat";
@@ -53,6 +64,9 @@ public class ClientHandler implements Runnable{
         broadcastMessage(message);
     }
 
+    /**
+     * Remove client handler.
+     */
     public synchronized void removeClientHandler(){
         String message = "<Server>: <" + this.name + "(" + this.id + ")" + "> has left the chat";
         System.out.println(message);
@@ -71,6 +85,11 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Broadcast message.
+     *
+     * @param message the message
+     */
     public synchronized void broadcastMessage(String message){
         for(ClientHandler clientHandler: clientHandlers) {
             if(clientHandler != this)
@@ -78,6 +97,9 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Close.
+     */
     public synchronized void close(){
         this.removeClientHandler();
 

@@ -5,21 +5,43 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 /**
+ * The class SQL lite adapter.
  *
- * @author xorigin
+ * @author 0xOrigin
  */
 public class SQLiteAdapter extends DML implements Adapter {
     
     private final Enum table;
-    private final Enum primaryKey;
-    
-    public SQLiteAdapter(Enum table, Enum primaryKeyOfthisTable){
+    private final Enum uniqueKey1;
+    private Enum uniqueKey2;
+
+    /**
+     * Instantiates a new SQL lite adapter.
+     *
+     * @param table                the table
+     * @param uniqueKeyOfthisTable the unique key of this table
+     */
+    public SQLiteAdapter(Enum table, Enum uniqueKeyOfthisTable){
     
         this.table = table;
-        this.primaryKey = primaryKeyOfthisTable;
-    }    
-    
+        this.uniqueKey1 = uniqueKeyOfthisTable;
+    }
+
+    /**
+     * Instantiates a new SQL lite adapter.
+     *
+     * @param table                 the table
+     * @param uniqueKeyOfthisTable1 the unique key of this table 1
+     * @param uniqueKeyOfthisTable2 the unique key of this table 2
+     */
+    public SQLiteAdapter(Enum table, Enum uniqueKeyOfthisTable1, Enum uniqueKeyOfthisTable2){
+
+        this.table = table;
+        this.uniqueKey1 = uniqueKeyOfthisTable1;
+        this.uniqueKey2 = uniqueKeyOfthisTable2;
+    }
     
     @Override
     public void insert(List<Enum> fields, List<Object> values){
@@ -27,7 +49,7 @@ public class SQLiteAdapter extends DML implements Adapter {
         if(checkEquality(fields.size(), values.size())){
         
             String query = "INSERT INTO " + this.table.name() + " (" + fields.toString().replaceAll("[\\[\\]]", "") + ")" +
-                           " VALUES "  + "(" + processValues(values) + ")";
+                           " VALUES "  + "(" + processValues(values) + ");";
             
             QueryExecutor.execute(query, getImagesPaths(values));
         }
@@ -44,7 +66,7 @@ public class SQLiteAdapter extends DML implements Adapter {
             for(int index = 0; index < fields.size(); index++)
                 query = query.concat(" " + fields.get(index).name() + "=" + processValues(Arrays.asList(values.get(index))) + ",");
 
-            query = query.substring(0, query.length()-1).concat(" WHERE " + where);
+            query = query.substring(0, query.length()-1).concat(" WHERE " + where).concat(";");
 
             QueryExecutor.execute(query, getImagesPaths(values));
         }
@@ -54,7 +76,7 @@ public class SQLiteAdapter extends DML implements Adapter {
     @Override
     public void delete(String where){
         
-        String query = "DELETE FROM " + this.table.name() + " WHERE " + where;
+        String query = "DELETE FROM " + this.table.name() + " WHERE " + where + ";";
         
         QueryExecutor.execute(query, new LinkedList<>());
     }
@@ -67,11 +89,17 @@ public class SQLiteAdapter extends DML implements Adapter {
     
     
     @Override
-    public Enum getPrimaryKeyColumnName(){
+    public Enum getUniqueKeyColumnName(){
     
-        return this.primaryKey;
+        return this.uniqueKey1;
     }
-    
+
+
+    @Override
+    public Enum getUniqueKeyColumnName2(){
+
+        return this.uniqueKey2;
+    }
     
     private static String processValues(List<Object> values){
         
@@ -83,11 +111,11 @@ public class SQLiteAdapter extends DML implements Adapter {
             if(isFile(value))
                 valuesString = valuesString.concat(" ? ");
             
-            else if(value instanceof String && !((String) value).matches(".*[+|-|\\*].*")) // To support +=, -=, *= 
+            else if(value instanceof String && !((String) value).matches(".*[+*-][=].*")) // To support +=, -=, *=
                 valuesString = valuesString.concat("\'" + value + "\'");
             
             else
-                valuesString = valuesString.concat(value.toString());
+                valuesString = valuesString.concat(value.toString().replaceAll("=", ""));
          
             valuesString = valuesString.concat((size-- == 1 ? "" : ", ")); // For String ending.
         }

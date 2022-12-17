@@ -15,14 +15,31 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The class Utilities.
+ */
 public class Utilities {
 
+    /**
+     * Change scene.
+     *
+     * @param event      the event
+     * @param fxmlFile   the fxml file
+     * @param stageTitle the stage title
+     */
     protected void changeScene(ActionEvent event, String fxmlFile, String stageTitle){
         FXMLLoader loader = getLoader(fxmlFile);
         Parent root = getParent(loader);
         setStagePreferences(root, event, stageTitle);
     }
 
+    /**
+     * Open chat room.
+     *
+     * @param event      the event
+     * @param clientID   the client id
+     * @param clientName the client name
+     */
     protected void openChatRoom(ActionEvent event, String clientID, String clientName){
         FXMLLoader loader = getLoader("ChatRoomView.fxml");
         Parent root = getParent(loader);
@@ -34,6 +51,11 @@ public class Utilities {
         setStagePreferences(root, event, "Chat Room");
     }
 
+    /**
+     * Center on screen.
+     *
+     * @param stage the stage
+     */
     public static void centerOnScreen(Stage stage){
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
@@ -71,10 +93,24 @@ public class Utilities {
         clientController.listenToBroadcast();
     }
 
+    /**
+     * Set alert owner.
+     *
+     * @param event the event
+     * @param alert the alert
+     */
     protected void setAlertOwner(ActionEvent event, Alert alert){
         alert.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
     }
 
+    /**
+     * Handle alert.
+     *
+     * @param alert     the alert
+     * @param title     the title
+     * @param message   the message
+     * @param alertType the alert type
+     */
     protected void handleAlert(Alert alert, String title, String message, Alert.AlertType alertType){
         alert.setAlertType(alertType);
         alert.setTitle(title);

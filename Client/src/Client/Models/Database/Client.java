@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import ORM.*;
 import ORM.Utilities.*;
 
+/**
+ * The class Client.
+ */
 public class Client extends ModelUtility {
 
     private final Adapter clientModel;
@@ -16,12 +19,25 @@ public class Client extends ModelUtility {
     private ResultSet resultSet;
     private Resource resource;
 
+    /**
+     * Instantiates a new Client.
+     *
+     * @param adapter the adapter
+     */
     public Client(Adapter adapter){
 
         super(adapter);
         this.clientModel = adapter;
     }
 
+    /**
+     * Insert.
+     *
+     * @param id       the id
+     * @param name     the name
+     * @param email    the email
+     * @param password the password
+     */
     public void insert(String id, String name, String email, String password){
 
         List<Enum> fields = Arrays.asList(Column.ID, Column.Name, Column.Email, Column.Password);
@@ -31,14 +47,32 @@ public class Client extends ModelUtility {
         this.clientModel.insert(fields, values);
     }
 
+    /**
+     * Update.
+     *
+     * @param fields the fields
+     * @param values the values
+     * @param id     the id
+     */
     public void update(List<Enum> fields, List<Object> values, String id){
         this.clientModel.update(fields, values, this.clientModel.Where(Column.ID, "=", id));
     }
 
+    /**
+     * Delete.
+     *
+     * @param id the id
+     */
     public void delete(String id){
         this.clientModel.delete(this.clientModel.Where(Column.ID, "=", id));
     }
 
+    /**
+     * Is client exists.
+     *
+     * @param id the id
+     * @return the boolean
+     */
     public boolean isClientExists(String id){
 
         boolean isExists = false;
@@ -64,6 +98,13 @@ public class Client extends ModelUtility {
         return isExists;
     }
 
+    /**
+     * Is valid account.
+     *
+     * @param id       the id
+     * @param password the password
+     * @return the boolean
+     */
     public boolean isValidAccount(String id, String password){
 
         if(!this.isClientExists(id))

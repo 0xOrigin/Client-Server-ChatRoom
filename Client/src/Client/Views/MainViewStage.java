@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The class Main view stage.
+ */
 public class MainViewStage extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -23,6 +26,11 @@ public class MainViewStage extends Application {
         System.exit(0);
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         launch();
     }

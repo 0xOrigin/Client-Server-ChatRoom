@@ -5,10 +5,18 @@ import Client.Models.DbContext;
 import Email.SendEmail;
 
 
+/**
+ * The class Client reg controller imp.
+ */
 public class ClientRegControllerImp implements ClientRegController {
 
     protected final DbContext dbContext;
 
+    /**
+     * Instantiates a new Client reg controller imp.
+     *
+     * @param dbContext the db context
+     */
     public ClientRegControllerImp(DbContext dbContext){
         this.dbContext = dbContext;
     }

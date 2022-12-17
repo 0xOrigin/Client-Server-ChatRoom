@@ -2,12 +2,24 @@ package Client.Controllers;
 
 import java.util.Random;
 
+/**
+ * The class Data generator.
+ */
 public class DataGenerator {
 
+    /**
+     * Instantiates a new Data generator.
+     */
     DataGenerator(){
 
     }
 
+    /**
+     * Generate id.
+     *
+     * @param name the name
+     * @return the id
+     */
     String generateID(String name){
         StringBuilder generatedID = new StringBuilder();
         name = name.replaceAll(" ", "_");

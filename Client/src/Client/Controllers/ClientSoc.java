@@ -4,6 +4,9 @@ import Client.Views.ViewControllers.ChatRoomViewController;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * The class Client soc.
+ */
 public class ClientSoc {
 
     private Socket socket;
@@ -13,6 +16,15 @@ public class ClientSoc {
     private String name;
     private String id;
 
+    /**
+     * Instantiates a new Client soc.
+     *
+     * @param host       the host
+     * @param port       the port
+     * @param id         the id
+     * @param name       the name
+     * @param controller the controller
+     */
     public ClientSoc(String host, int port, String id, String name, ChatRoomViewController controller){
         try{
             this.socket = new Socket(host, port);
@@ -21,11 +33,18 @@ public class ClientSoc {
             this.controller = controller;
             this.name = name;
             this.id = id;
+
+//            System.out.println(this.socket + " From client");
         } catch (IOException ex){
             this.close();
         }
     }
 
+    /**
+     * Send message.
+     *
+     * @param message the message
+     */
     void sendMessage(String message){
         try {
             if(this.socket.isConnected()){
@@ -40,11 +59,17 @@ public class ClientSoc {
         }
     }
 
+    /**
+     * Send registration message.
+     */
     void sendRegistrationMessage(){
         this.sendMessage(this.id);
         this.sendMessage(this.name);
     }
 
+    /**
+     * Listen to broadcast.
+     */
     void listenToBroadcast(){
         new Thread(new Runnable() {
             @Override
@@ -66,6 +91,9 @@ public class ClientSoc {
         }).start();
     }
 
+    /**
+     * Close.
+     */
     synchronized void close() {
         try {
             if(this.bufferedReader != null)

@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * The class Login view controller.
+ */
 public class LoginViewController extends Utilities {
     @FXML
     private AnchorPane anchorPane;
@@ -26,11 +29,21 @@ public class LoginViewController extends Utilities {
     private Button backButton;
 
 
+    /**
+     * On back button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onBackButtonAction(ActionEvent event) {
         super.changeScene(event, "MainView.fxml", "Client-Server Chat Room");
     }
 
+    /**
+     * On login button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onLoginButtonAction(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -55,10 +68,25 @@ public class LoginViewController extends Utilities {
         }
     }
 
+    /**
+     * Is valid account.
+     *
+     * @param controller    the controller
+     * @param idField       the id field
+     * @param passwordField the password field
+     * @return the boolean
+     */
     boolean isValidAccount(LoginController controller, TextField idField, TextField passwordField){
         return controller.isValidAccount(idField.getText().trim(), passwordField.getText().trim());
     }
 
+    /**
+     * Get client name.
+     *
+     * @param controller the controller
+     * @param clientID   the client id
+     * @return the string
+     */
     String getClientName(LoginController controller, String clientID){
         return controller.getClientName(clientID);
     }
